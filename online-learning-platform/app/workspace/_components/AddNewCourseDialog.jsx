@@ -36,11 +36,11 @@ function AddNewCourseDialog({ children }) {
       ...prev,
       [field]: value,
     }));
-    console.log("Form Data: ", formData);
+    console.log(formData);
   };
 
   const onGenerate = () => {
-    console.log("Form Data: ", formData);
+    console.log(formData);
   };
 
   return (
@@ -54,21 +54,18 @@ function AddNewCourseDialog({ children }) {
               <div>
                 <label>Course Name</label>
                 <Input
-                  placeholder="name"
+                  placeholder="Name"
                   onChange={(event) =>
-                    onHandleInputChange("courseName", event?.target.value)
+                    onHandleInputChange("name", event?.target.value)
                   }
                 />
               </div>
               <div>
                 <label>Course Description (Optional)</label>
                 <Textarea
-                  placeholder="description"
+                  placeholder="Description"
                   onChange={(event) =>
-                    onHandleInputChange(
-                      "courseDescription",
-                      event?.target.value
-                    )
+                    onHandleInputChange("description", event?.target.value)
                   }
                 />
               </div>
@@ -78,7 +75,10 @@ function AddNewCourseDialog({ children }) {
                   placeholder="No. Of Chapter"
                   type="number"
                   onChange={(event) =>
-                    onHandleInputChange("noOfChapters", event?.target.value)
+                    onHandleInputChange(
+                      "noOfChapters",
+                      Number(event?.target.value)
+                    )
                   }
                 />
               </div>
@@ -108,7 +108,7 @@ function AddNewCourseDialog({ children }) {
               <div>
                 <label>Category</label>
                 <Input
-                  placeholder="Category (Seperated by Comma)"
+                  placeholder="Category (Separated by Comma)"
                   onChange={(event) =>
                     onHandleInputChange("category", event?.target.value)
                   }
