@@ -18,10 +18,12 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { Button } from "@/components/ui/button";
-import { SparkleIcon } from "lucide-react";
+import { Loader2Icon, SparkleIcon } from "lucide-react";
+import axios from "axios";
 
 function AddNewCourseDialog({ children }) {
   // This component renders a dialog for creating a new course using AI.
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -39,9 +41,22 @@ function AddNewCourseDialog({ children }) {
     console.log(formData);
   };
 
-  const onGenerate = () => {
+  const onGenerate = async () => {
     console.log(formData);
+    try {
+      setLoading(true);
+      const result = await axios.post("/api/generate-course-layout", {
+        ...formData,
+      });
+      console.log(result.data);
+      setLoading(false);
+    } catch (e) {
+      setLoading(false);
+      console.log(e);
+    }
   };
+
+  // Render the dialog with input fields for course details
 
   return (
     <Dialog>
@@ -85,8 +100,8 @@ function AddNewCourseDialog({ children }) {
               <div className="flex items-center gap-3">
                 <label>Include Video</label>
                 <Switch
-                  onCheckedChange={() =>
-                    onHandleInputChange("includeVideo", !formData?.includeVideo)
+                  onCheckedChange={(checked) =>
+                    onHandleInputChange("includeVideo", checked)
                   }
                 />
               </div>
@@ -116,8 +131,13 @@ function AddNewCourseDialog({ children }) {
               </div>
 
               <div className="mt-5">
-                <Button className={"w-full"} onClick={onGenerate}>
+                <Button
+                  className={"w-full"}
+                  onClick={onGenerate}
+                  disabled={loading}
+                >
                   {" "}
+                  {loading ? <Loader2Icon className="animate-spin" /> : null}
                   <SparkleIcon /> Generate Course{" "}
                 </Button>
               </div>
